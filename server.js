@@ -104,10 +104,6 @@ app.get('/profile/:id', (req, res) => {
         }
     })
     .catch(err => res.status('404').json('error getting user'));
-
-    // if(!found) {
-    //     res.status('404').json('no user around');
-    // }
 });
 
 app.put('/image', (req, res) => {
