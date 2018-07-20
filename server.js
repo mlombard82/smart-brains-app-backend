@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser'); // to parse the JSON
 const bcrypt = require('bcrypt-nodejs');
 const knex = require('knex');
+const register = require('./controllers/register');
 var cors = require('cors');
 
 var db = knex({
@@ -20,7 +21,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/', (req, res)=>{
-    res.send(database.users);
+    // res.send(database.users);
 });
 
 app.post('/signin', (req, res) => {
@@ -41,33 +42,7 @@ app.post('/signin', (req, res) => {
     }).catch(err => res.status(400).json('wrong credentials'));
 });
 
-app.post('/register', (req, res) => {
-    const {name, email, password} = req.body;
-
-    var hash = bcrypt.hashSync(password);
-
-    db.transaction(trx => {
-        return trx.insert({
-            hash: hash,
-            email: email
-        })
-        .into('login')
-        .returning('email')
-        .then(loginEmail => {
-            return trx('users')
-                .returning('*')
-                .insert({
-                    name: name,
-                    email: loginEmail[0],
-                    joined: new Date()
-                })
-                .then(user => res.json(user[0]));
-        })
-        .then(trx.commit)
-        .catch(trx.rollback);
-    })
-    .catch(err => res.status('400').json('unable to register'));
-});
+app.post('/register', (req, res) => register.handleRegister(req, res, bcrypt, db)); //dependency injection
 
 app.get('/profile/:id', (req, res) => {
     const {id} = req.params;
