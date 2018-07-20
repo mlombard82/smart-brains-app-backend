@@ -5,6 +5,8 @@ const knex = require('knex');
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
+const image = require('./controllers/image');
+
 
 var cors = require('cors');
 
@@ -33,18 +35,7 @@ app.post('/register', (req, res) => register.handleRegister(req, res, bcrypt, db
 
 app.get('/profile/:id', (req, res) => profile.handleProfileGet (req, res, db));
 
-app.put('/image', (req, res) => {
-    
-    const {id} = req.body;
-    
-    db('users').where({id})
-    .increment('entries', 1)
-    .returning('entries')
-    .then(entries => {
-        res.json(entries[0]);
-    })
-    .catch(err => res.status(400).json('unable to get entries'));
-});
+app.put('/image', (req, res) => { image.handleImage (req, res, db)});
 
 
 
