@@ -25,9 +25,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get('/', (req, res)=>{
-    // res.send(database.users);
-});
+app.get('/', (req, res)=>{ res.send('it is working')});
 
 app.post('/signin', (req, res) => signin.handleSignin(req, res, bcrypt, db));
 app.post('/register', (req, res) => register.handleRegister(req, res, bcrypt, db)); //dependency injection
@@ -35,10 +33,10 @@ app.get('/profile/:id', (req, res) => profile.handleProfileGet (req, res, db));
 app.put('/image', (req, res) => { image.handleImage (req, res, db)});
 app.post('/imageUrl', (req, res) => { image.handleApiCall (req, res)});
 
-
-
-app.listen(process.env.PORT || 3000, () => {
-    console.log(`app is listening in port ${process.env.PORT}`);
+const PORT = process.env.PORT;
+app.listen(PORT || 3000, () => {
+    console.log(process.env.PORT)
+    console.log(`app is listening in port ${PORT}`);
 });
 
 
