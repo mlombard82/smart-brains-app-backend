@@ -13,10 +13,8 @@ var cors = require('cors');
 var db = knex({
     client: 'pg',
     connection: {
-      host : 'postgresql-clean-87589',
-      user : 'mauriciolombard',
-      password : '',
-      database : 'smart-brainy'
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
     }
 });
 
