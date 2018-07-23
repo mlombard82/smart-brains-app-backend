@@ -13,7 +13,7 @@ var cors = require('cors');
 var db = knex({
     client: 'pg',
     connection: {
-        connectionString: process.env.DATABASE_URL,
+        connectionString: process.env.DATABASE_URL,  //heroku specific
         ssl: true,
     }
 });
